@@ -17,12 +17,12 @@ export default function Onboarding() {
   const screens = [
     {
       title: 'Welcome to AETHER',
-      body: 'Your personal aviation learning laboratory.',
-      detail: 'Explore aviation concepts through interactive visual lessons, aircraft simulations, AI-assisted explanations, flashcards and quizzes.',
+      body: 'Your space to learn anything.',
+      detail: 'Explore concepts, understand difficult topics, build flashcards, practise with quizzes and improve your learning through interactive experiences.',
     },
     {
       title: 'Discover the learning tools',
-      body: 'Interactive simulations, V-speeds, runway distances, climb profiles, AI explanations, flashcards, quizzes and adaptive revision.',
+      body: 'Learn from any topic, upload PDFs and images, understand concepts visually, generate flashcards and quizzes, track your progress.',
       detail: 'AETHER is free to explore. No account is required.',
     },
     {

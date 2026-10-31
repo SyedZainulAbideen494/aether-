@@ -19,6 +19,8 @@ import AiSetup from './pages/AiSetup'
 import Legal from './pages/Legal'
 import PrivacyData from './pages/PrivacyData'
 import BottomNav from './components/Navigation/BottomNav'
+import UtilityDrawer from './components/UtilityDrawer'
+import { PanelRight } from 'lucide-react'
 import Sidebar from './components/Navigation/Sidebar'
 
 export default function App() {
@@ -29,6 +31,7 @@ export default function App() {
   useEffect(() => { modelManager.setApiKey(settings.geminiApiKey) }, [settings.geminiApiKey])
   const [sidebarOpen] = useState(false)
   void sidebarOpen
+  const [drawerOpen, setDrawerOpen] = useState(false)
   useAmbientSound()
 
   // handle oauth callback
@@ -57,13 +60,15 @@ export default function App() {
     <>
     <Onboarding />
     <PomodoroTicker />
+    <button onClick={() => setDrawerOpen(true)} className="fixed top-4 right-4 z-30 px-3 py-1.5 rounded-xl bg-elevated border border-line text-sm flex items-center gap-1"><PanelRight size={14} /> More</button>
+    <UtilityDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)} />
     <div className="min-h-full flex">
       <div className="hidden md:block">
         <Sidebar />
       </div>
       <main className="flex-1 min-w-0 pb-20 md:pb-0 md:ml-0">
         <Routes>
-          <Route path="/" element={<Home spotify={spotify} />} />
+          <Route path="/" element={<Home />} />
           <Route path="/focus" element={<Focus />} />
           <Route path="/statistics" element={<Statistics />} />
           <Route path="/settings" element={<Settings spotify={spotify} />} />
@@ -77,11 +82,11 @@ export default function App() {
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </main>
-      <Footer />
       <div className="md:hidden">
         <BottomNav />
       </div>
     </div>
+    <Footer />
     </>
   )
 }

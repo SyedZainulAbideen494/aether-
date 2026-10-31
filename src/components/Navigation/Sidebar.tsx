@@ -1,14 +1,13 @@
 import { NavLink } from 'react-router-dom'
-import { Home, Target, BarChart3, Settings, Layers, Brain, ChevronLeft, ChevronRight } from 'lucide-react'
+import { Home, BarChart3, Settings, Layers, Brain, ChevronLeft, ChevronRight } from "lucide-react"
 import { useState } from 'react'
 
 const items = [
   { to: '/', icon: Home, label: 'Home' },
-  { to: '/focus', icon: Target, label: 'Focus' },
-  { to: '/statistics', icon: BarChart3, label: 'Stats' },
-  { to: '/settings', icon: Settings, label: 'Settings' },
-  { to: '/flashcards', icon: Layers, label: 'Flashcards' },
   { to: '/learn', icon: Brain, label: 'Learn' },
+  { to: '/flashcards', icon: Layers, label: 'Flashcards' },
+  { to: '/statistics', icon: BarChart3, label: 'Insights' },
+  { to: '/settings', icon: Settings, label: 'Settings' },
 ]
 
 export default function Sidebar() {

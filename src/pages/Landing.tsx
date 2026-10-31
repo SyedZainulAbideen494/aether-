@@ -7,7 +7,7 @@ export default function Landing() {
     <div className="min-h-screen">
       <section className="max-w-5xl mx-auto px-4 md:px-8 pt-16 pb-10 text-center">
         <h1 className="text-5xl md:text-6xl font-semibold tracking-tight mb-4">Understand Aviation. Not Just Memorise It.</h1>
-        <p className="text-muted text-lg mb-8">A free interactive learning platform for exploring aviation concepts, aircraft performance, visual explanations, flashcards and quizzes.</p>
+        <p className="text-muted text-lg mb-8">A free, interactive learning platform that helps you understand difficult subjects through AI explanations, interactive visual learning, flashcards, quizzes and adaptive study tools.</p>
         <div className="flex gap-3 justify-center">
           <Link to="/"><Button>Start Learning</Button></Link>
           <Link to="/pan"><Button variant="secondary">Explore Performance Air Nav</Button></Link>

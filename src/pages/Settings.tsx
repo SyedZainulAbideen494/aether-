@@ -9,6 +9,8 @@ import { VisualizerStyle } from '../types'
 import { Link } from 'react-router-dom'
 import { testGemini } from '../services/gemini/generate'
 import ModelManager from '../components/Settings/ModelManager'
+import ProviderInstructionsModal from '../components/UI/ProviderInstructionsModal'
+import { PROVIDERS } from '../services/providers/registry'
 
 export default function Settings({ spotify }: { spotify: any }) {
   const settings = useAppStore((s) => s.settings)
@@ -24,6 +26,8 @@ export default function Settings({ spotify }: { spotify: any }) {
   const [geminiModel, setGeminiModel] = useState(useAppStore.getState().settings.geminiModel)
   const [geminiStatus, setGeminiStatus] = useState<string | null>(null)
   const [geminiTesting, setGeminiTesting] = useState(false)
+  const [showGeminiHelp, setShowGeminiHelp] = useState(false)
+  const [showSpotifyHelp, setShowSpotifyHelp] = useState(false)
 
   const saveCreds = () => {
     setSpotifyConfig({ clientId, redirectUri })
@@ -38,6 +42,7 @@ export default function Settings({ spotify }: { spotify: any }) {
   const styles: VisualizerStyle[] = ['spectrum', 'waveform', 'equalizer', 'particles', 'rings']
 
   return (
+    <>
     <div className="max-w-3xl mx-auto px-4 md:px-8 pt-6 md:pt-10 safe-top safe-x space-y-6">
       <h1 className="text-3xl font-semibold tracking-tight">Settings</h1>
 
@@ -64,6 +69,7 @@ export default function Settings({ spotify }: { spotify: any }) {
               <Button onClick={() => { saveCreds(); spotify.connect() }}>Connect Spotify</Button>
             )}
             <Button variant="ghost" onClick={spotify.clearCredentials}>Clear credentials</Button>
+            <Button variant="secondary" onClick={() => setShowSpotifyHelp(true)}>How do I get this?</Button>
           </div>
           {testResult && <p className="text-xs text-muted">{testResult}</p>}
           {spotify.error && <p className="text-xs text-red-300">{spotify.error}</p>}
@@ -126,6 +132,10 @@ export default function Settings({ spotify }: { spotify: any }) {
         </p>
         <div className="space-y-3">
           <Input label="Gemini API Key" value={geminiInput} onChange={setGeminiInput} placeholder="AIza..." type="password" />
+          <div className="flex gap-2">
+            <Button variant="secondary" onClick={() => setShowGeminiHelp(true)}>How do I get this?</Button>
+            <Button variant="ghost" onClick={() => setShowGeminiHelp(true)}>Why is this needed?</Button>
+          </div>
           <div>
             <label className="block text-xs text-muted mb-1.5">Model (type any available Gemini model ID)</label>
             <input list="gemini-models" value={geminiModel} onChange={(e) => setGeminiModel(e.target.value)} className="w-full bg-white/5 border border-line rounded-xl px-3 py-2.5 text-sm text-ink" placeholder="gemini-2.5-flash" />
@@ -187,5 +197,8 @@ export default function Settings({ spotify }: { spotify: any }) {
         <Button variant="danger" onClick={() => { if (confirm('Clear all data?')) useAppStore.getState().clearAll() }}>Clear all data</Button>
       </Card>
     </div>
+      <ProviderInstructionsModal info={PROVIDERS.gemini} open={showGeminiHelp} onClose={() => setShowGeminiHelp(false)} />
+      <ProviderInstructionsModal info={PROVIDERS.spotify} open={showSpotifyHelp} onClose={() => setShowSpotifyHelp(false)} />
+    </>
   )
 }
