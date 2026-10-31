@@ -6,7 +6,9 @@ import Input from '../components/UI/Input'
 import Toggle from '../components/UI/Toggle'
 import Slider from '../components/UI/Slider'
 import { VisualizerStyle } from '../types'
+import { Link } from 'react-router-dom'
 import { testGemini } from '../services/gemini/generate'
+import ModelManager from '../components/Settings/ModelManager'
 
 export default function Settings({ spotify }: { spotify: any }) {
   const settings = useAppStore((s) => s.settings)
@@ -125,14 +127,25 @@ export default function Settings({ spotify }: { spotify: any }) {
         <div className="space-y-3">
           <Input label="Gemini API Key" value={geminiInput} onChange={setGeminiInput} placeholder="AIza..." type="password" />
           <div>
-            <label className="block text-xs text-muted mb-1.5">Model</label>
-            <select value={geminiModel} onChange={(e) => setGeminiModel(e.target.value)} className="w-full bg-white/5 border border-line rounded-xl px-3 py-2.5 text-sm">
-              <option value="gemini-2.5-flash">gemini-2.5-flash</option>
-              <option value="gemini-2.5-pro">gemini-2.5-pro</option>
-              <option value="gemini-2.0-flash">gemini-2.0-flash</option>
-              <option value="gemini-1.5-flash">gemini-1.5-flash</option>
-              <option value="gemini-1.5-pro">gemini-1.5-pro</option>
-            </select>
+            <label className="block text-xs text-muted mb-1.5">Model (type any available Gemini model ID)</label>
+            <input list="gemini-models" value={geminiModel} onChange={(e) => setGeminiModel(e.target.value)} className="w-full bg-white/5 border border-line rounded-xl px-3 py-2.5 text-sm text-ink" placeholder="gemini-2.5-flash" />
+            <datalist id="gemini-models">
+              <option value="gemini-2.5-flash" />
+              <option value="gemini-2.5-pro" />
+              <option value="gemini-2.5-flash-lite" />
+              <option value="gemini-2.0-flash" />
+              <option value="gemini-2.0-pro-exp" />
+              <option value="gemini-1.5-flash" />
+              <option value="gemini-1.5-pro" />
+              <option value="gemini-1.5-flash-8b" />
+              <option value="gemini-3.0-pro" />
+              <option value="gemini-3.0-flash" />
+              <option value="gemini-4.0-pro" />
+              <option value="gemini-4.0-flash" />
+              <option value="gemini-5.0-pro" />
+              <option value="gemini-5.0-flash" />
+            </datalist>
+            <p className="text-xs text-faint mt-1">Enter any model ID your API key supports (e.g. gemini-3.0-pro).</p>
           </div>
           <div className="flex flex-wrap gap-2">
             <Button onClick={() => { setGeminiKey(geminiInput); useAppStore.getState().setSettings({ geminiModel }); setGeminiStatus('Saved.') }}>Save API key</Button>
@@ -151,6 +164,20 @@ export default function Settings({ spotify }: { spotify: any }) {
             <Button variant="danger" onClick={() => { setGeminiInput(''); setGeminiKey(''); setGeminiStatus('Deleted.') }}>Delete API key</Button>
           </div>
           {geminiStatus && <p className="text-xs text-muted">{geminiStatus}</p>}
+        </div>
+      </Card>
+
+      <ModelManager />
+
+
+      <Card>
+        <h3 className="text-sm font-medium mb-4">Help & Legal</h3>
+        <div className="flex flex-wrap gap-2">
+          <Link to="/help"><Button variant="secondary">Help & Setup</Button></Link>
+          <Link to="/help/ai-setup"><Button variant="secondary">AI Setup</Button></Link>
+          <Link to="/legal"><Button variant="secondary">Legal Centre</Button></Link>
+          <Link to="/privacy-data"><Button variant="secondary">Privacy & Data</Button></Link>
+          <Button variant="secondary" onClick={() => { localStorage.removeItem('aether:onboarding-version'); window.location.reload() }}>Show Welcome Tour Again</Button>
         </div>
       </Card>
 

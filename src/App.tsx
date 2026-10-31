@@ -2,6 +2,9 @@ import { useEffect, useState } from 'react'
 import { Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom'
 import { useSpotify } from './hooks/useSpotify'
 import { useAppStore } from './store/useAppStore'
+import Onboarding from './components/Onboarding'
+import Footer from './components/Footer'
+import { modelManager } from './services/gemini/modelManager'
 import { useAmbientSound } from './hooks/useAmbientSound'
 import Home from './pages/Home'
 import PomodoroTicker from './components/Pomodoro/PomodoroTicker'
@@ -10,6 +13,11 @@ import Statistics from './pages/Statistics'
 import Settings from './pages/Settings'
 import Flashcards from './pages/flashcards/Flashcards'
 import Learn from './pages/learn/Learn'
+import Help from './pages/Help'
+import Landing from './pages/Landing'
+import AiSetup from './pages/AiSetup'
+import Legal from './pages/Legal'
+import PrivacyData from './pages/PrivacyData'
 import BottomNav from './components/Navigation/BottomNav'
 import Sidebar from './components/Navigation/Sidebar'
 
@@ -18,6 +26,7 @@ export default function App() {
   const navigate = useNavigate()
   const location = useLocation()
   const settings = useAppStore((s) => s.settings)
+  useEffect(() => { modelManager.setApiKey(settings.geminiApiKey) }, [settings.geminiApiKey])
   const [sidebarOpen] = useState(false)
   void sidebarOpen
   useAmbientSound()
@@ -46,6 +55,7 @@ export default function App() {
 
   return (
     <>
+    <Onboarding />
     <PomodoroTicker />
     <div className="min-h-full flex">
       <div className="hidden md:block">
@@ -59,9 +69,15 @@ export default function App() {
           <Route path="/settings" element={<Settings spotify={spotify} />} />
           <Route path="/flashcards/*" element={<Flashcards />} />
           <Route path="/learn/*" element={<Learn />} />
+          <Route path="/landing" element={<Landing />} />
+          <Route path="/help" element={<Help />} />
+          <Route path="/help/ai-setup" element={<AiSetup />} />
+          <Route path="/legal" element={<Legal />} />
+          <Route path="/privacy-data" element={<PrivacyData />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </main>
+      <Footer />
       <div className="md:hidden">
         <BottomNav />
       </div>

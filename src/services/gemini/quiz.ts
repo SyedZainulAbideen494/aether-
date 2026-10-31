@@ -1,4 +1,4 @@
-import { GoogleGenAI } from '@google/genai'
+import { modelManager } from './modelManager'
 import { extractJson } from '../../utils/json'
 
 export async function generateQuiz(apiKey: string, params: {
@@ -11,7 +11,6 @@ export async function generateQuiz(apiKey: string, params: {
   types?: string[]
   sourceOnly?: boolean
 }): Promise<any[]> {
-  const ai = new GoogleGenAI({ apiKey })
   const prompt = `Generate ${params.count} high-quality quiz questions.
 Each question object must use these exact fields: question, questionType (one of mcq,tf,numeric,conceptual), options (array of strings for mcq/tf), correctAnswer, explanation, hint, difficulty, sourceReference, concept.
 ${params.topic ? 'Topic: ' + params.topic : ''}
@@ -27,12 +26,10 @@ Rules:
 - Include sourceReference/page when possible.
 - Return JSON { questions: [...] }.
 `
-  const res = await ai.models.generateContent({
-    model: params.model || 'gemini-2.5-flash',
+  const { text } = await modelManager.generate('quiz', apiKey, {
     contents: prompt,
     config: { responseMimeType: 'application/json', temperature: 0.4 },
   })
-  const text = res.text ?? ''
   const parsed = extractJson(text)
   const raw = Array.isArray(parsed?.questions) ? parsed.questions : (Array.isArray(parsed) ? parsed : [])
   const normOpt = (o: any) => (typeof o === 'string' ? o : (o?.text ?? o?.label ?? o?.option ?? String(o)))
